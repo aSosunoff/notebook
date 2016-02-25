@@ -4,12 +4,6 @@ class Router
 {
     private $routes;
 
-    public function d($s){
-        echo "<pre>";
-        print_r($s);
-        echo "</pre>";
-    }
-
     public function __construct()
     {
         $this->routes = include(ROOT.'/config/routes.php');
@@ -31,13 +25,12 @@ class Router
             if (preg_match("~$uriPattern~", $uri)) {
                 //определяем какой контроллер и акшен обрабатывает запрос
                 $internalRoute = preg_replace("~$uriPattern~", $path, $uri);
-                //echo $internalRoute;
-                $segments = explode('/', $internalRoute);
 
-                $controllerName = ucfirst(array_shift($segments) . "Controller");
-                $actionName = "action" . ucfirst(array_shift($segments));
+                $segmentsArray = explode('/', $internalRoute);
 
-                $parameters = $segments;
+                $controllerName = ucfirst(array_shift($segmentsArray) . "Controller");
+                $actionName = "action" . ucfirst(array_shift($segmentsArray));
+                $parametersArray = $segmentsArray;
 
                 //подключаем файл контроллера
                 $controllerFile = ROOT . "/controllers/" . $controllerName . ".php";
@@ -47,8 +40,7 @@ class Router
 
                 //создаём объект класса контроллера который подключили ранее и вызываем метод
                 $controllerObject = new $controllerName;
-                $result = call_user_func_array(array($controllerObject, $actionName), $parameters);
-//                $result = $controllerObject->$actionName();
+                $result = call_user_func_array(array($controllerObject, $actionName), $parametersArray);
 
                 if ($result != null) {
                     break;

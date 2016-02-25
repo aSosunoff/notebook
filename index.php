@@ -13,18 +13,10 @@
     }
 
 //2. подключение файлов системы
-    define('ROOT', $_SERVER['DOCUMENT_ROOT']);
-    //define('ROOT', dirname(__FILE__));
+    define('ROOT', dirname(__FILE__));
     //определяем именованную константу в которой путь корня сайта
     require_once(ROOT.'/component/Router.php');
-
-//3. учтановка соединения с БД
-//    $connection = mysqli_connect('localhost', 'h93874_alex', '9inttostr321!@', 'h93874_db_name') or die ('Невозможно подключиться в БД');
-//    $res = $connection->query("SELECT * FROM name");
-//    while($row = mysqli_fetch_array($res)) {
-//        echo $row['ID'] . " " . $row['TEXT'] . "<br/>";
-//    }
-//    $connection->close();
+    require_once(ROOT.'/component/DB.php');
 
 
 //4.Вызов Router
