@@ -28,8 +28,12 @@ class Router
 
                 $segmentsArray = explode('/', $internalRoute);
 
-                $controllerName = ucfirst(array_shift($segmentsArray) . "Controller");
-                $actionName = "action" . ucfirst(array_shift($segmentsArray));
+                $viewName = ucfirst(array_shift($segmentsArray));
+                $controllerName =  $viewName . "Controller";
+
+                $viewLayout = array_shift($segmentsArray);
+                $actionName = "action" . ucfirst($viewLayout);
+
                 $parametersArray = $segmentsArray;
 
                 //подключаем файл контроллера
@@ -42,9 +46,19 @@ class Router
                 $controllerObject = new $controllerName;
                 $result = call_user_func_array(array($controllerObject, $actionName), $parametersArray);
 
+
+                define('RENDER_BODY', ROOT . '/view/' . $viewName . '/' . $viewLayout . '.php');
+
+                if(file_exists(MASTER_PAGE)){
+                    include_once(MASTER_PAGE);
+                }
+                else{ echo 'Ошибочка отображения'; }
+
                 if ($result != null) {
                     break;
                 }
+
+
             }
         }
     }

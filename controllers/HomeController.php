@@ -2,6 +2,6 @@
 
 class HomeController{
     public function actionIndex(){
-        echo "Главная страницв";
+        return 'Главная страница';
     }
 }

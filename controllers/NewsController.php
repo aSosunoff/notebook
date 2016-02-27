@@ -1,16 +1,17 @@
 <?php
 
 include_once ROOT.'/model/News.php';
+define('VIEW_NEWS',ROOT.'/view/News/');
 
 class NewsController
 {
     public function actionIndex(){
-        $newsList = array();
         $newsList = News::getNewsList();
-        echo "<pre>";
-        print_r($newsList);
-        echo "</pre>";
-        return true;
+        //require_once(VIEW_NEWS.'/index.php');
+//        echo "<pre>";
+//        print_r($newsList);
+//        echo "</pre>";
+        return $newsList;
     }
 
     public function actionItem($id){
