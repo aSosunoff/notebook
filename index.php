@@ -23,7 +23,6 @@
     require_once(ROOT.'/component/Router.php');
     require_once(ROOT.'/component/DB.php');
 
-
 //4.Вызов Router
     $router = new Router();
     $router->run();

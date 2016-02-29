@@ -46,7 +46,7 @@ class Router
                 $controllerObject = new $controllerName;
                 $result = call_user_func_array(array($controllerObject, $actionName), $parametersArray);
 
-
+                ;
                 define('RENDER_BODY', ROOT . '/view/' . $viewName . '/' . $viewLayout . '.php');
 
                 if(file_exists(MASTER_PAGE)){

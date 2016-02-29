@@ -8,7 +8,7 @@
     <link type="text/css" rel="stylesheet" href="../../content/css/style.css">
     <script type="text/javascript" src="../../content/js/js.js"></script>
 
-    <title><?php echo $TITLE; ?></title>
+    <title><?php //echo $ViewBag->title; ?></title>
 </head>
 <body>
     <?php require_once(RENDER_BODY); ?>
