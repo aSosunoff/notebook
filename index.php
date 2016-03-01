@@ -1,6 +1,5 @@
 <?php
 
-
 //FRONT CONTROLLER
 
 //1. общие настройки
@@ -14,15 +13,15 @@
 
 //2. подключение файлов системы
     define('ROOT', dirname(__FILE__));
+
     //определяем именованную константу в которой путь корня сайта
     define('MASTER_PAGE',ROOT.'/view/Layout/Layout.php');
     //определяем мастер страницу
-
     $TITLE = "";
 
     require_once(ROOT.'/component/Router.php');
     require_once(ROOT.'/component/DB.php');
+    require_once(ROOT . '/component/Link.php');
 
 //4.Вызов Router
-    $router = new Router();
-    $router->run();
+    $router = (new Router())->run();
