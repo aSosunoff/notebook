@@ -2,11 +2,11 @@
 
 class Router
 {
-    private $routes;
+    private $_routes;
 
     public function __construct()
     {
-        $this->routes = include(ROOT.'/config/routes.php');
+        $this->_routes = include(ROOT.'/config/routes.php');
     }
 
     private function getURI(){
@@ -16,38 +16,60 @@ class Router
         }
     }
 
+    private function _setArray($segmentsArray){
+        $array = [];
+        $viewName = ucfirst(array_shift($segmentsArray));
+        $controllerName = $viewName . "Controller";
+        $viewLayout = array_shift($segmentsArray);
+        $actionName = "action" . ucfirst($viewLayout);
+        $parametersArray = $segmentsArray;
+
+        $array['View'] = (
+            ['name' => $viewName,
+            'layout' => $viewLayout,
+            'path' => ROOT . '/view/' . $viewName . '/' . $viewLayout . '.php']
+        );
+
+        $array['Controller'] = (
+            ['name' => $controllerName,
+            'action' => $actionName,
+            'path' => ROOT . "/controllers/" . $controllerName . ".php"]
+        );
+
+        $array['Parameter'] = $parametersArray;
+
+        return $array;
+    }
+
     public function run(){
         //получить строку запроса
         $uri = $this->getURI();
         //проверить наличие в файле routes.php
-        foreach($this->routes as $uriPattern => $path) {
+        foreach($this->_routes as $uriPattern => $path) {
             //срвавниваем есть ли такой путь в наших роутах
             if (preg_match("~$uriPattern~", $uri)) {
                 //определяем какой контроллер и акшен обрабатывает запрос
                 $internalRoute = preg_replace("~$uriPattern~", $path, $uri);
 
-                $segmentsArray = explode('/', $internalRoute);
-
-                $viewName = ucfirst(array_shift($segmentsArray));
-                $controllerName =  $viewName . "Controller";
-
-                $viewLayout = array_shift($segmentsArray);
-                $actionName = "action" . ucfirst($viewLayout);
-
-                $parametersArray = $segmentsArray;
+                $array = $this->_setArray(explode('/', $internalRoute));
 
                 //подключаем файл контроллера
-                $controllerFile = ROOT . "/controllers/" . $controllerName . ".php";
-                if (file_exists($controllerFile)) {
-                    include_once($controllerFile);
+                if (file_exists($array['Controller']['path'])) {
+                    include_once($array['Controller']['path']);
                 }
 
                 //создаём объект класса контроллера который подключили ранее и вызываем метод
+                $controllerName = $array['Controller']['name'];
                 $controllerObject = new $controllerName;
-                $result = call_user_func_array(array($controllerObject, $actionName), $parametersArray);
+
+                $result = call_user_func_array(
+                    array(
+                        $controllerObject,
+                        $array['Controller']['action']),
+                    $array['Parameter']);
 
                 ;
-                define('RENDER_BODY', ROOT . '/view/' . $viewName . '/' . $viewLayout . '.php');
+                define('RENDER_BODY', $array['View']['path']);
 
                 if(file_exists(MASTER_PAGE)){
                     include_once(MASTER_PAGE);

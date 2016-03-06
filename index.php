@@ -17,7 +17,6 @@
     //определяем именованную константу в которой путь корня сайта
     define('MASTER_PAGE',ROOT.'/view/Layout/Layout.php');
     //определяем мастер страницу
-    $TITLE = "";
 
     require_once(ROOT.'/component/Router.php');
     require_once(ROOT.'/component/DB.php');
