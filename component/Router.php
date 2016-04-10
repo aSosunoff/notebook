@@ -59,8 +59,7 @@ class Router
                 }
 
                 //создаём объект класса контроллера который подключили ранее и вызываем метод
-                $controllerName = $array['Controller']['name'];
-                $controllerObject = new $controllerName;
+                $controllerObject = new $array['Controller']['name'];
 
                 $result = call_user_func_array(
                     array(
@@ -68,7 +67,6 @@ class Router
                         $array['Controller']['action']),
                     $array['Parameter']);
 
-                ;
                 define('RENDER_BODY', $array['View']['path']);
 
                 if(file_exists(MASTER_PAGE)){

@@ -1,3 +1,1 @@
-<div>
-    <?php echo $result?>
-</div>
+<?php echo $result; ?>
